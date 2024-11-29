@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const Player = ({ initialName, symbol }: any) => {
+export const Player = ({ initialName, symbol, isActive }: any) => {
     const [isEditing, setIsEditing] = useState(false);
     const [playerName, setPlayerName] = useState(initialName);
     
@@ -8,29 +8,27 @@ export const Player = ({ initialName, symbol }: any) => {
         setIsEditing((editing) => !editing);
     }
 
+    let playerJsx = null;
+    if (isEditing) {
+        playerJsx =  <input 
+        type="text" 
+        required 
+        value={playerName}
+        onChange={(e) => {
+            setPlayerName(e.target.value);
+        }}
+         />;
+    } else {
+        playerJsx = <span className="player-name">{playerName}</span>;
+    }
+
     return (
         <>
-            <li className="player">
-                {
-                    !isEditing
-                    &&
-                    <>
-                        <span className="player-name">{playerName}</span>
-                    </>
-                }
-                {
-                    isEditing
-                    &&
-                        <input 
-                            type="text" 
-                            required 
-                            value={playerName}
-                            onChange={(e) => {
-                                setPlayerName(e.target.value);
-                            }}
-                             />
-                }
-                <span className="player-symbol">{symbol}</span>
+            <li className={isActive ? 'active' : undefined}>
+                <span className="player">
+                    {playerJsx}
+                    <span className="player-symbol">{symbol}</span>
+                </span>
             </li>
             <button onClick={updateEditState}>{isEditing ? 'Save' : 'Edit'}</button>
         </>

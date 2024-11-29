@@ -6,15 +6,22 @@ const initialGameBoardState: any = [
     [null, null, null],
 ];
 
-export const GameBoard = () => {
+export interface GameBoardProps {
+    onUpdateActivePlayer: () => void
+    activePlayerSymbol: string
+}
+
+export const GameBoard = ({ onUpdateActivePlayer, activePlayerSymbol } : GameBoardProps) => {
     const [gameBoard, setGameBoard] = useState(initialGameBoardState);
 
     const updateGameBoard = (rowIndex: number, colIndex: number) => {
         setGameBoard((prevState: any) => {
             let gameBoardState = [...prevState.map((row: []) => [...row])];
-            gameBoardState[rowIndex][colIndex] = 'X';
+            gameBoardState[rowIndex][colIndex] = activePlayerSymbol;
             return gameBoardState;
         });
+
+        onUpdateActivePlayer();
     }
 
     return (
