@@ -1,29 +1,11 @@
-import { useState } from "react";
-
-const initialGameBoardState: any = [
-    [null, null, null],
-    [null, null, null],
-    [null, null, null],
-];
 
 export interface GameBoardProps {
-    onUpdateActivePlayer: () => void
-    activePlayerSymbol: string
+    onSelectSquare: (rowIndex: number, colIndex: number) => void
+    gameBoard: any[]
 }
 
-export const GameBoard = ({ onUpdateActivePlayer, activePlayerSymbol } : GameBoardProps) => {
-    const [gameBoard, setGameBoard] = useState(initialGameBoardState);
-
-    const updateGameBoard = (rowIndex: number, colIndex: number) => {
-        setGameBoard((prevState: any) => {
-            let gameBoardState = [...prevState.map((row: []) => [...row])];
-            gameBoardState[rowIndex][colIndex] = activePlayerSymbol;
-            return gameBoardState;
-        });
-
-        onUpdateActivePlayer();
-    }
-
+export const GameBoard = ({ onSelectSquare, gameBoard } : GameBoardProps) => {
+    
     return (
         <ol id="game-board">
             {gameBoard.map((row: [], rowIndex: number) => {
@@ -32,7 +14,12 @@ export const GameBoard = ({ onUpdateActivePlayer, activePlayerSymbol } : GameBoa
                         {row.map((playerSymbol, colIndex: number) => {
                             return (
                                 <li key={colIndex}>
-                                    <button onClick={() => updateGameBoard(rowIndex, colIndex)} >{playerSymbol}</button>
+                                    <button 
+                                        onClick={() => onSelectSquare(rowIndex, colIndex)} 
+                                        disabled={playerSymbol !== null}
+                                        >
+                                            {playerSymbol}
+                                    </button>
                                 </li>
                             );
                         })}
