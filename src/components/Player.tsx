@@ -1,11 +1,17 @@
 import { useState } from "react";
 
-export const Player = ({ initialName, symbol, isActive }: any) => {
+export const Player = ({ initialName, symbol, isActive, updatePlayer }: any) => {
     const [isEditing, setIsEditing] = useState(false);
     const [playerName, setPlayerName] = useState(initialName);
     
     const updateEditState = () => {
         setIsEditing((editing) => !editing);
+
+        if (!isEditing === false) {
+            updatePlayer({
+                [symbol]: playerName
+            });
+        }
     }
 
     let playerJsx = null;
